@@ -13,6 +13,14 @@ namespace NancyAspNetHosOwinIdentity.Modules.Identity.Models
         public bool RembmerMe { get; set; }
     }
 
+    public class vm_RegisterViewModel
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+
 }
 
 //    public class ExternalLoginConfirmationViewModel
