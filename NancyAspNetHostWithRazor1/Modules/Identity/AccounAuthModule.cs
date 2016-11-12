@@ -14,6 +14,7 @@ using Nancy.ModelBinding;
 using Nancy.Responses;
 using Nancy.Routing;
 using Nancy.Security;
+using NancyAspNetHosOwinIdentity.Identity;
 using NancyAspNetHosOwinIdentity.Modules.Identity.Models;
 
 
@@ -23,12 +24,11 @@ namespace NancyAspNetHosOwinIdentity.Modules.Identity
     public class AccounAuthModule : NancyModule
     {
         public AccounAuthModule() : base("/account")
-        {
-            //Get["/login"] = paramaters => "Get Login page";
+        {     
             Post["/login"] = Login;
             Post["/login/forgot"] = o => "email-> send reset";
             Post["/login/reset"] = o => "Emailguid, username, pw from the reset page";
-            Delete["/logout"] = Signout;
+            Delete["/logout"] = Logout;
 
             Post["/register"] = Register;
         }
@@ -58,7 +58,8 @@ namespace NancyAspNetHosOwinIdentity.Modules.Identity
             else
             {
                 response.StatusCode = HttpStatusCode.Forbidden;
-                response = this.Response.AsJson(new {message = "Invalid UserName or Password.", HttpStatusCode.Unauthorized});
+                response = this.Response.AsJson(new { httpStatusCode = HttpStatusCode.Unauthorized,
+                    message = "Invalid UserName or Password.", HttpStatusCode.Unauthorized});
             }
             
 
@@ -68,19 +69,19 @@ namespace NancyAspNetHosOwinIdentity.Modules.Identity
         private object Register(dynamic paramters)
         {
             var reg = this.Bind<vm_RegisterViewModel>();
-            var response = new Response();
+            Response response;
             if (reg != null)
             {
                 var userStore = new UserStore<IdentityUser>();
                 var userManager = new UserManager<IdentityUser>(userStore);
                 var authenticationManager = this.Context.GetAuthenticationManager();
 
-                var identUser = new IdentityUser
+                var identUser = new ApplicationUser()
                 {
                     UserName = reg.Email,
                     Id = Guid.NewGuid().ToString(),
                     Email = reg.Email,
-                    PasswordHash = userManager.PasswordHasher.HashPassword(reg.Password)
+                    PasswordHash = userManager.PasswordHasher.HashPassword(reg.Password),                                        
                 };
 
                 var createTask = userManager.Create(identUser);
@@ -92,6 +93,7 @@ namespace NancyAspNetHosOwinIdentity.Modules.Identity
                     response = this.Response.AsJson(
                             new
                             {
+                                httpStatusCode = HttpStatusCode.Created,
                                 message = $"User: {identUser.Email} has been successfully registered."
                             }, HttpStatusCode.Created);
 
@@ -99,9 +101,11 @@ namespace NancyAspNetHosOwinIdentity.Modules.Identity
                 }
                 else
                 {
+                    // TODO set messate for creteTask.message
                     response = this.Response.AsJson(
                             new
                             {
+                                httpStatusCode = HttpStatusCode.InternalServerError,
                                 message = "There was an error creating the user."
                             }, HttpStatusCode.InternalServerError);
                 }
@@ -111,6 +115,7 @@ namespace NancyAspNetHosOwinIdentity.Modules.Identity
                 response = this.Response.AsJson(
                    new
                    {
+                       httpStatusCode = HttpStatusCode.NotAcceptable,
                        message = "Could not bind to viewmodel."
                    }, HttpStatusCode.NotAcceptable);
 
@@ -119,7 +124,7 @@ namespace NancyAspNetHosOwinIdentity.Modules.Identity
             return response;
         }
 
-        private object Signout(dynamic paramters)
+        private object Logout(dynamic paramters)
         {
             var authenticationManager = this.Context.GetAuthenticationManager();
             authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie,
@@ -127,6 +132,7 @@ namespace NancyAspNetHosOwinIdentity.Modules.Identity
 
             return this.Response.AsJson(new
             {
+                httpStatusCode = HttpStatusCode.OK,
                 message = "You have ben successfully logged out."
             }, HttpStatusCode.OK);
         }

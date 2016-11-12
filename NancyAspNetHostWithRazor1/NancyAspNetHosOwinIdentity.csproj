@@ -131,6 +131,8 @@
     <Compile Include="Modules\Identity\Models\AccountViewModels..cs" />
     <Compile Include="Modules\Identity\Models\ManageViewModels.cs" />
     <Compile Include="Modules\IndexModule.cs" />
+    <Compile Include="Modules\PublicFacingApp\PublicAppModule.cs" />
+    <Compile Include="Modules\SecureApp\SecureAppModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -145,8 +147,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modules\Identity\Views\" />
-    <Folder Include="Modules\PublicFacingApp\" />
-    <Folder Include="Modules\SecureApp\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
