@@ -3,6 +3,7 @@ using Microsoft.Owin.Security;
 using Nancy;
 using Nancy.Owin;
 using Nancy.Security;
+using NancyAspNetHosOwinIdentity.Identity;
 
 namespace NancyAspNetHosOwinIdentity.Modules
 {
@@ -12,6 +13,9 @@ namespace NancyAspNetHosOwinIdentity.Modules
         {
             Get["/"] = parameters =>
             {
+
+                var b = this.Context.GetOwinContext();
+                
                 var env = GetOwinEnvironmentValue<IDictionary<string, object>>(this.Context.Items, NancyMiddleware.RequestEnvironmentKey);
 
                 if (env == null)
@@ -25,6 +29,8 @@ namespace NancyAspNetHosOwinIdentity.Modules
                 var statusMessage = string.Format("You made a {0} request to {1} which runs on OWIN {2}.", requestMethod, requestPath, owinVersion);
 
                 IAuthenticationManager authenticationManager = this.Context.GetAuthenticationManager();
+
+
 
                 return View["index"];
             };

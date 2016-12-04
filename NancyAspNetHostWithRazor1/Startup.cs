@@ -18,7 +18,7 @@ namespace NancyAspNetHosOwinIdentity
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login"),
+                LoginPath = new PathString("/account/Login"),
                 CookieName = "MyNanacyAppName",
                 CookieHttpOnly = true, 
                 CookieSecure = CookieSecureOption.SameAsRequest,

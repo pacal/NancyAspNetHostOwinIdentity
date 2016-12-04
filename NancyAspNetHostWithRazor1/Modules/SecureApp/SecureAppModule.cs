@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Web;
 using Nancy;
 using Nancy.Security;
@@ -12,7 +13,8 @@ namespace NancyAspNetHosOwinIdentity.Modules.SecureApp
         public SecureAppModule() : base("/secure")
         {
             this.RequiresMSOwinAuthentication();
-            Get["/"] = paramaters => "This is a secured area";
+            Get["/"] = o => "This is a secured area which requires login";
+
         }
     }
 }

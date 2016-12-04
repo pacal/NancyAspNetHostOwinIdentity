@@ -126,11 +126,11 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Modules\Identity\IdentityConfig.cs" />
-    <Compile Include="Modules\Identity\AccounAuthModule.cs" />
+    <Compile Include="Modules\Identity\AccountAuthModule.cs" />
     <Compile Include="Modules\Identity\Models\IdentityModels.cs" />
     <Compile Include="Modules\Identity\Models\AccountViewModels..cs" />
-    <Compile Include="Modules\Identity\Models\ManageViewModels.cs" />
     <Compile Include="Modules\IndexModule.cs" />
+    <Compile Include="Modules\NancyContextExtensions.cs" />
     <Compile Include="Modules\PublicFacingApp\PublicAppModule.cs" />
     <Compile Include="Modules\SecureApp\SecureAppModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -146,6 +146,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Extensions\" />
     <Folder Include="Modules\Identity\Views\" />
   </ItemGroup>
   <PropertyGroup>
